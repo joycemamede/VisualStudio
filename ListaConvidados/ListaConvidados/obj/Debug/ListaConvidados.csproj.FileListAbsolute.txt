@@ -1,0 +1,10 @@
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\bin\Debug\ListaConvidados.exe.config
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\bin\Debug\ListaConvidados.exe
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\bin\Debug\ListaConvidados.pdb
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.csproj.AssemblyReference.cache
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.Form1.resources
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.Properties.Resources.resources
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.csproj.GenerateResource.cache
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.csproj.CoreCompileInputs.cache
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.exe
+C:\Users\Joycinha\Documents\hello_world\ListaConvidados\ListaConvidados\obj\Debug\ListaConvidados.pdb
