@@ -127,5 +127,17 @@ namespace ListaConvidados
             mtxtTelefone.Clear();
             txtEmail.Clear();
         }
+
+        private void btnDeletar_Click(object sender, EventArgs e)
+        {
+            //TODO: Adicionar botão para deletar e alterar dados do BD 
+
+        }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            //TODO: Adicionar botão para deletar e alterar dados do BD
+        }
+
     }
 }
