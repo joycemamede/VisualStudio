@@ -53,7 +53,7 @@ namespace ListaConvidados
                 Console.WriteLine("reader.hasRows = " + reader.HasRows);
 
                 // 3. Clear the table... because maybe there was something there before?
-                //dgConvidado.Rows.Clear();
+                dgConvidado.Rows.Clear();
                 Console.WriteLine("linhas limpas");
 
                 // 4. Reader.Read() means to make a read for each row in the resulting query.
@@ -102,7 +102,7 @@ namespace ListaConvidados
                 MySqlCommand comandoMySql = realizaConexacoBD.CreateCommand();
 
                 comandoMySql.CommandText = "INSERT INTO convidado (nomeConvidado,emailConvidado,telConvidado,acompanhanteConvidado) " +
-                    "VALUES('" + txtNome.Text + "', '" + mtxtTelefone.Text + "','" + txtEmail.Text + "', " + Convert.ToInt16(cbAcompanhantes.Text) + ")";
+                    "VALUES('" + txtNome.Text + "', '" + txtEmail.Text + "','" + mtxtTelefone.Text + "', " + Convert.ToInt16(cbAcompanhantes.Text) + ")";
                 comandoMySql.ExecuteNonQuery();
 
                 realizaConexacoBD.Close();
@@ -123,21 +123,81 @@ namespace ListaConvidados
         }
         private void limparCampos()
         {
+            txtID.Clear();
             txtNome.Clear();
             mtxtTelefone.Clear();
             txtEmail.Clear();
+            cbAcompanhantes.Text = "";
         }
 
         private void btnDeletar_Click(object sender, EventArgs e)
         {
-            //TODO: Adicionar botão para deletar e alterar dados do BD 
+            MySqlConnectionStringBuilder conexaoBD = conexaoBanco();
+            MySqlConnection realizaConexacoBD = new MySqlConnection(conexaoBD.ToString());
+            try
+            {
+                realizaConexacoBD.Open(); //Abre a conexão com o banco
+
+                MySqlCommand comandoMySql = realizaConexacoBD.CreateCommand(); //Crio um comando SQL
+                // "DELETE FROM filme WHERE idFilme = "+ textBoxId.Text +""
+                comandoMySql.CommandText = "DELETE FROM convidado WHERE idConvidado = " + txtID.Text + "";
+                //comandoMySql.CommandText = "UPDATE filme SET ativoFilme = 0 WHERE idFilme = " + tbID.Text + "";
+
+                comandoMySql.ExecuteNonQuery();
+
+                realizaConexacoBD.Close(); // Fecho a conexão com o banco
+                MessageBox.Show("Deletado com sucesso"); //Exibo mensagem de aviso
+                atualizaGrid();
+                limparCampos();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Não foi possivel abrir a conexão! ");
+                Console.WriteLine(ex.Message);
+            }
 
         }
 
         private void btnAlterar_Click(object sender, EventArgs e)
         {
-            //TODO: Adicionar botão para deletar e alterar dados do BD
+            MySqlConnectionStringBuilder conexaoBD = conexaoBanco();
+            MySqlConnection realizaConexacoBD = new MySqlConnection(conexaoBD.ToString());
+            try
+            {
+                realizaConexacoBD.Open(); //Abre a conexão com o banco
+
+                MySqlCommand comandoMySql = realizaConexacoBD.CreateCommand(); //Crio um comando SQL
+                comandoMySql.CommandText = "UPDATE convidado SET nomeConvidado = '" + txtNome.Text + "', " +
+                    "emailConvidado = '" + txtEmail.Text + "', " +
+                    "telConvidado = '" + mtxtTelefone.Text + "', " +
+                    "acompanhanteConvidado = " + Convert.ToInt16(cbAcompanhantes.Text) +
+                    " WHERE idConvidado = " + txtID.Text + "";
+                comandoMySql.ExecuteNonQuery();
+
+                realizaConexacoBD.Close(); // Fecho a conexão com o banco
+                MessageBox.Show("Atualizado com sucesso"); //Exibo mensagem de aviso
+                atualizaGrid();
+                limparCampos();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Não foi possivel abrir a conexão! ");
+                Console.WriteLine(ex.Message);
+            }
         }
 
+        private void dgConvidado_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgConvidado.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+            {
+                dgConvidado.CurrentRow.Selected = true;
+                //preenche os textbox com as células da linha selecionada
+                txtNome.Text = dgConvidado.Rows[e.RowIndex].Cells["colNome"].FormattedValue.ToString();
+                txtEmail.Text = dgConvidado.Rows[e.RowIndex].Cells["colEmail"].FormattedValue.ToString();
+                mtxtTelefone.Text = dgConvidado.Rows[e.RowIndex].Cells["colTelefone"].FormattedValue.ToString();
+                cbAcompanhantes.Text = dgConvidado.Rows[e.RowIndex].Cells["colAcompanhante"].FormattedValue.ToString();
+                txtID.Text = dgConvidado.Rows[e.RowIndex].Cells["colID"].FormattedValue.ToString();
+            }
+        }
     }
 }

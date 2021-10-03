@@ -51,6 +51,8 @@ namespace ListaConvidados
             this.cbAcompanhantes = new System.Windows.Forms.ComboBox();
             this.btnDeletar = new System.Windows.Forms.Button();
             this.btnAlterar = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtID = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.convidadoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.convidadosDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgConvidado)).BeginInit();
@@ -148,12 +150,14 @@ namespace ListaConvidados
             this.colEmail,
             this.colTelefone,
             this.colAcompanhante});
+            this.dgConvidado.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgConvidado.Location = new System.Drawing.Point(46, 245);
             this.dgConvidado.Name = "dgConvidado";
             this.dgConvidado.RowHeadersWidth = 62;
             this.dgConvidado.RowTemplate.Height = 28;
             this.dgConvidado.Size = new System.Drawing.Size(1220, 308);
             this.dgConvidado.TabIndex = 13;
+            this.dgConvidado.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgConvidado_CellContentClick);
             // 
             // colID
             // 
@@ -233,11 +237,30 @@ namespace ListaConvidados
             this.btnAlterar.UseVisualStyleBackColor = true;
             this.btnAlterar.Click += new System.EventHandler(this.btnAlterar_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(40, 30);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(26, 20);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "ID";
+            // 
+            // txtID
+            // 
+            this.txtID.Enabled = false;
+            this.txtID.Location = new System.Drawing.Point(114, 24);
+            this.txtID.Name = "txtID";
+            this.txtID.Size = new System.Drawing.Size(39, 26);
+            this.txtID.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1348, 603);
+            this.Controls.Add(this.txtID);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnAlterar);
             this.Controls.Add(this.btnDeletar);
             this.Controls.Add(this.cbAcompanhantes);
@@ -285,6 +308,8 @@ namespace ListaConvidados
         private System.Windows.Forms.ComboBox cbAcompanhantes;
         private System.Windows.Forms.Button btnDeletar;
         private System.Windows.Forms.Button btnAlterar;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtID;
     }
 }
 
