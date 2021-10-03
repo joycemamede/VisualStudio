@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace ListaConvidados
 {
@@ -16,27 +17,115 @@ namespace ListaConvidados
         {
             InitializeComponent();
         }
-
-        private void btnAdicionar_Click(object sender, EventArgs e)
+        private MySqlConnectionStringBuilder conexaoBanco()
         {
-            string nome = txtNome.Text;
-            string telefone = mtxtTelefone.Text;
-            string email = txtEmail.Text;
-            MessageBox.Show("Convidado Adicionado");
-
+            MySqlConnectionStringBuilder conexaoBD = new MySqlConnectionStringBuilder();
+            conexaoBD.Server = "localhost";
+            conexaoBD.Database = "convidado";
+            conexaoBD.UserID = "root";
+            conexaoBD.Password = "";
+            conexaoBD.SslMode = 0;
+            return conexaoBD;
         }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
+            atualizaGrid();
+            dgConvidado.ColumnHeadersDefaultCellStyle.Font = new Font("Roboto", 10);
+        }
 
+        private void atualizaGrid()
+        {
+            MySqlConnectionStringBuilder conexaoBD = conexaoBanco();
+            MySqlConnection realizaConexacoBD = new MySqlConnection(conexaoBD.ToString());
+            try
+            {
+                // 1. Open the dB connection
+                realizaConexacoBD.Open();
+                Console.WriteLine("conexao aberta");
+
+                // 2. Make a query for the data we'd like to show in our table
+                MySqlCommand comandoMySql = realizaConexacoBD.CreateCommand();
+                comandoMySql.CommandText = "SELECT * FROM convidado";
+                MySqlDataReader reader = comandoMySql.ExecuteReader();
+                Console.WriteLine("comando executado");
+
+                Console.WriteLine("reader.hasRows = " + reader.HasRows);
+
+                // 3. Clear the table... because maybe there was something there before?
+                //dgConvidado.Rows.Clear();
+                Console.WriteLine("linhas limpas");
+
+                // 4. Reader.Read() means to make a read for each row in the resulting query.
+                //    It returns back a boolean value when it's called, so it can be used as
+                //    the base-case of this while-loop. Once it can no longer read, or has run out of rows to read,
+                //    then reader.Read() returns false and the while-loop terminates.
+                while (reader.Read())
+                {
+                    DataGridViewRow row = (DataGridViewRow)dgConvidado.Rows[0].Clone();//FAZ UM CAST E CLONA A LINHA DA TABELA
+                                  
+                    row.Cells[0].Value = reader.GetInt32(0);//ID
+                    Console.WriteLine("applied ID");
+                    
+                    row.Cells[1].Value = reader.GetString(1);//NOME
+                    Console.WriteLine("applied NOME");
+                    
+                    row.Cells[2].Value = reader.GetString(2);//EMAIL
+                    Console.WriteLine("applied EMAIL");
+                    
+                    row.Cells[3].Value = reader.GetString(3);//TELEFONE
+                    Console.WriteLine("applied TELEFONE");
+                    
+                    row.Cells[4].Value = reader.GetInt32(4);//ACOMPANHANTE
+                    Console.WriteLine("applied Acompanhante");
+
+                    dgConvidado.Rows.Add(row);//ADICIONO A LINHA NA TABELA
+                }
+                Console.WriteLine("encheu a tabela");
+
+                realizaConexacoBD.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not open connection ! " + ex.Message);
+                Console.WriteLine(ex.Message);
+            }
+        }
+        private void btnAdicionar_Click(object sender, EventArgs e)
+        {
+            MySqlConnectionStringBuilder conexaoBD = conexaoBanco();
+            MySqlConnection realizaConexacoBD = new MySqlConnection(conexaoBD.ToString());
+            try
+            {
+                realizaConexacoBD.Open();
+
+                MySqlCommand comandoMySql = realizaConexacoBD.CreateCommand();
+
+                comandoMySql.CommandText = "INSERT INTO convidado (nomeConvidado,emailConvidado,telConvidado,acompanhanteConvidado) " +
+                    "VALUES('" + txtNome.Text + "', '" + mtxtTelefone.Text + "','" + txtEmail.Text + "', " + Convert.ToInt16(cbAcompanhantes.Text) + ")";
+                comandoMySql.ExecuteNonQuery();
+
+                realizaConexacoBD.Close();
+                MessageBox.Show("Inserido com sucesso");
+                atualizaGrid();
+                limparCampos();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            txtNome.Text = "";
-            txtEmail.Text = "";
-            mtxtTelefone.Text = "";
+            limparCampos();
         }
-
+        private void limparCampos()
+        {
+            txtNome.Clear();
+            mtxtTelefone.Clear();
+            txtEmail.Clear();
+        }
     }
 }
