@@ -31,7 +31,7 @@ namespace ListaConvidados
         private void Form1_Load(object sender, EventArgs e)
         {
             atualizaGrid();
-            dgConvidado.ColumnHeadersDefaultCellStyle.Font = new Font("Roboto", 10);
+            dgConvidado.ColumnHeadersDefaultCellStyle.Font = new Font("Roboto", 8);
         }
 
         private void atualizaGrid()
